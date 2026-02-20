@@ -6,7 +6,7 @@ clear variables, close all
 % The data file should contain five columns in this order:
 % 1) year, 2) month, 3) day, 4) interest rate surprise, 5) stock price surprise.
 % Uncomment one of the filenames below.
-data_filename = 'M.csv';
+data_filename = 'MOISBEI.csv';
 %data_filename = 'surprises_ecb_mpd_me_njt_d.csv';
 data_table = readtable(data_filename);
 M = data_table{:,4:5};
