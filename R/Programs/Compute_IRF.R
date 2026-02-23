@@ -66,6 +66,49 @@ Data_Anal  <- Data_Anal[complete.cases(Data_Anal),]
 source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
 
 #----------------------------------------------
+# Estimation of a BVAR using the package bsvars
+#----------------------------------------------
+pLags      = 6
+nSteps     = 60
+Confidence = 1-conf1
+Var_shock  = c('ShockOISL')
+#Var_shock  = c('CBI_OIS_BEI')
+VarNames2  = c(Var_shock,Var_Cont)
+#Var_shock  = c('INT')
+#VarNames2  = Var_Cont
+year_ini  = substr(DATA$Date,1,4)[1]
+month_ini = as.numeric(substr(DATA$Date,6,7)[1])
+Data_CGV  = matrix(as.numeric(as.matrix(DATA[,VarNames2])),nrow(DATA),length(VarNames2))
+colnames(Data_CGV) = VarNames2
+#X  <- na.omit(df[, c("Y","pi","i")])
+X  <- na.omit(Data_CGV[, c(VarNames2)])
+
+# 2) Especificación BVAR homocedástico (BVAR con Minnesota)
+p <- pLags
+stationary_vec <- c(FALSE,rep(TRUE, ncol(X)-1))  # ajusta según tus series
+
+spec <- specify_bsvar$new(
+  data       = as.matrix(X),
+  p          = p,
+  stationary = stationary_vec,
+)
+
+# 3) Estimación (burn-in + cadena principal)
+fit_burn <- estimate(spec,     S = 2000,  thin = 1)
+fit_bvar <- estimate(fit_burn, S = 20000, thin = 1)
+
+# 4) Resumen
+summary(fit_bvar)
+
+
+irfs <- compute_impulse_responses(fit_bvar, horizon = nSteps)
+plot(irfs,probability = Confidence)
+
+
+
+
+
+#----------------------------------------------
 # Estimation of a BVAR using the package bvar
 #----------------------------------------------
 pLags      = 13
@@ -125,72 +168,31 @@ VarNames3 = VarNames2
 par(mfrow=c(ceiling(length(VarNames3)^(1/2)),ceiling(length(VarNames3)/ceiling(length(VarNames3)^(1/2)))))
 
 for(i in 1:length(VarNames2)) {
-    #nn <- Long_Names[which(Long_Names[, 'Name'] == VarNames1[i]), 'Long_Name']
-    L_Name      = VarNames2[i]
-    #jpeg(paste0(L_Name, ".jpeg"), width = 350, height = 350)
-    plot.ts(IR_Ch1[, i], ylim = c(min(cbind(IR_Ch_Low1[, i])), max(cbind(IR_Ch_sup1[, i]))),
-            main = L_Name,
-            ylab = 'Percent',
-            xlab = 'Horizons',
-            col = 'blue4',
-            lwd = 2)
-    lines(IR_Ch_Low1[, i], col = 'blue4', lty = 2, lwd = 2)
-    lines(IR_Ch_sup1[, i], col = 'blue4', lty = 2, lwd = 2)
-    
-    
-    # Agregar área sombreada
-    polygon(x = c(time(IR_Ch1), rev(time(IR_Ch1))), 
-            y = c(IR_Ch_Low1[, i], rev(IR_Ch_sup1[, i])), 
-            col = alpha('blue4', 0.2), 
-            border = NA)
-    
-    # Agregar línea horizontal en y=0
-    abline(h = 0, col = 'azure4', lwd = 2)
-    
-    # Agregar rejillas (grids)
-    grid(col = "gray", lty = "dotted")
-    #dev.off()
+  #nn <- Long_Names[which(Long_Names[, 'Name'] == VarNames1[i]), 'Long_Name']
+  L_Name      = VarNames2[i]
+  #jpeg(paste0(L_Name, ".jpeg"), width = 350, height = 350)
+  plot.ts(IR_Ch1[, i], ylim = c(min(cbind(IR_Ch_Low1[, i])), max(cbind(IR_Ch_sup1[, i]))),
+          main = L_Name,
+          ylab = 'Percent',
+          xlab = 'Horizons',
+          col = 'blue4',
+          lwd = 2)
+  lines(IR_Ch_Low1[, i], col = 'blue4', lty = 2, lwd = 2)
+  lines(IR_Ch_sup1[, i], col = 'blue4', lty = 2, lwd = 2)
+  
+  
+  # Agregar área sombreada
+  polygon(x = c(time(IR_Ch1), rev(time(IR_Ch1))), 
+          y = c(IR_Ch_Low1[, i], rev(IR_Ch_sup1[, i])), 
+          col = alpha('blue4', 0.2), 
+          border = NA)
+  
+  # Agregar línea horizontal en y=0
+  abline(h = 0, col = 'azure4', lwd = 2)
+  
+  # Agregar rejillas (grids)
+  grid(col = "gray", lty = "dotted")
+  #dev.off()
 }
-
-
-#----------------------------------------------
-# Estimation of a BVAR using the package bsvars
-#----------------------------------------------
-pLags      = 6
-nSteps     = 60
-Confidence = 1-conf1
-Var_shock  = c('ShockBloom')
-Var_shock  = c('CBI_bloomberg')
-VarNames2  = c(Var_shock,Var_Cont)
-#Var_shock  = c('INT')
-#VarNames2  = Var_Cont
-year_ini  = substr(DATA$Date,1,4)[1]
-month_ini = as.numeric(substr(DATA$Date,6,7)[1])
-Data_CGV  = matrix(as.numeric(as.matrix(DATA[,VarNames2])),nrow(DATA),length(VarNames2))
-colnames(Data_CGV) = VarNames2
-#X  <- na.omit(df[, c("Y","pi","i")])
-X  <- na.omit(Data_CGV[, c(VarNames2)])
-
-# 2) Especificación BVAR homocedástico (BVAR con Minnesota)
-p <- pLags
-stationary_vec <- c(FALSE,rep(TRUE, ncol(X)-1))  # ajusta según tus series
-
-spec <- specify_bsvar$new(
-  data       = as.matrix(X),
-  p          = p,
-  stationary = stationary_vec,
-)
-
-# 3) Estimación (burn-in + cadena principal)
-fit_burn <- estimate(spec,     S = 2000,  thin = 1)
-fit_bvar <- estimate(fit_burn, S = 20000, thin = 1)
-
-# 4) Resumen
-summary(fit_bvar)
-
-
-irfs <- compute_impulse_responses(fit_bvar, horizon = nSteps)
-plot(irfs,probability = Confidence)
-
 
 
