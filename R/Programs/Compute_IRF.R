@@ -15,6 +15,7 @@ setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP
 
 # Upload the data
 DATA      <- read_excel('DATAccorta.xlsx')
+#DATA      = DATA[37:nrow(DATA),]
 
 #Define the variables of analysis
 
@@ -57,7 +58,8 @@ pLags      = 3
 nSteps     = 60
 Confidence = 1-conf1
 Var_shock  = c('ShockBloom')
-#Var_shock  = c('MP_bloo_BEI')
+Var_shock  = c('MP_bloo_BEI')
+#Var_shock  = c('CBI_bloo_BEI')
 VarNames2  = c(Var_shock,Var_Cont)
 #Var_shock  = c('INT')
 #VarNames2  = Var_Cont
@@ -96,7 +98,7 @@ plot(irfs,probability = Confidence)
 #--------------------------------------------------------------------
 DATA_Cop= DATA
 ss = MP_shocks[3]
-Data_Risk = create_lagged_df(DATA_Cop, vars = c('INT','CPI','GDP','CDS'), h = 1)
+Data_Risk = create_lagged_df(DATA_Cop, vars = Var_Cont, h = 1)
 Data_Shock= merge(DATA_Cop[,c('Date',ss)],Data_Risk,by = 'Date')
 Data_Shock= Data_Shock[complete.cases(Data_Shock),]
 fml       = as.formula(paste0(ss,'~ ',paste0(colnames(Data_Risk[,2:ncol(Data_Risk),drop=F]),collapse = '+')))
@@ -115,11 +117,11 @@ source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/M
 #----------------------------------------------
 # Estimation of a BVAR using the package bvar
 #----------------------------------------------
-pLags      = 13
+pLags      = 3
 nSteps     = 60
 Confidence = 0.68
-Var_shock  = c('ShockBloom')
-Var_shock  = c('CBI_bloo_BEI')
+Var_shock  = c('ShockOIS')
+Var_shock  = c('CBI_OIS_BEI')
 VarNames2  = c(Var_shock,Var_Cont)
 #Var_shock  = c('INT')
 #VarNames2  = Var_Cont
