@@ -22,8 +22,8 @@ DATA      <- read_excel('DATAccorta.xlsx')
 #1). Dependent Variables
 Var_names  = c('GDP','INT','CPI','EXC')
 Var_names  = c('CPI')
-#Var_Cont   = c('GDP','CPI','INT','EXC','CDS')
-Var_Cont   = c('GDP','CPI','INT')
+Var_Cont   = c('GDP','CPI','INT','EXC','CDS')
+#Var_Cont   = c('GDP','CPI','INT','CDS')
 #Var_Cont   = NULL
 #2). Monetary policy shock proxies
 #MP_shocks  = c('ShockBloom','ShockOISL','ShockBR')
@@ -57,9 +57,9 @@ for(ss in MP_shocks){
 pLags      = 3
 nSteps     = 60
 Confidence = 1-conf1
-Var_shock  = c('ShockBloom')
-Var_shock  = c('MP_bloo_BEI')
-#Var_shock  = c('CBI_bloo_BEI')
+Var_shock  = c('ShockOISL')
+#Var_shock  = c('MP_OIS_BEI')
+#Var_shock  = c('CBI_OIS_BEI')
 VarNames2  = c(Var_shock,Var_Cont)
 #Var_shock  = c('INT')
 #VarNames2  = Var_Cont
@@ -108,7 +108,7 @@ res       = as.matrix(OLS$residuals)
 Data_Shock= cbind(Data_Shock,res)
 DATA_Cop      = merge(DATA_Cop,Data_Shock[,c('Date','res')],by='Date')
 shock_anal  = 'res'
-Var_Cont  = NULL
+Var_Cont  = c('CPI')
 Data_Anal  <- DATA_Cop[,c('Date',unique(c(Var_names)),shock_anal)]
 Data_Anal  <- Data_Anal[complete.cases(Data_Anal),]
 source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')

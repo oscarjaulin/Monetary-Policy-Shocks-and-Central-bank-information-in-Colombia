@@ -12,8 +12,8 @@ for(n in Var_names){
     Yt        <- create_leads_df(Data_Anal, vars = n, h = h, all_leads = FALSE) 
     Yt_lag    <- create_lagged_df(Data_Anal, vars = n, h = 1)
     # long difference
-    Yt[,2]    <-as.numeric(Yt[,2])-as.numeric(Yt_lag[,2])
-    
+    #Yt[,2]    <-as.numeric(Yt[,2])-as.numeric(Yt_lag[,2])
+    Yt[,2]    <-as.numeric(Yt[,2])
     has_c <- p != 0
     
     if (has_c||!is.null(Var_Cont)) {
