@@ -14,16 +14,16 @@ source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/M
 setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Input/')
 
 # Upload the data
-DATA      <- read_excel('DATAccorta.xlsx')
+DATA      <- read_excel('DATAc2021.xlsx')
 #DATA      = DATA[37:nrow(DATA),]
 
 #Define the variables of analysis
 
 #1). Dependent Variables
 Var_names  = c('GDP','INT','CPI','EXC')
-Var_names  = c('CPI')
-Var_Cont   = c('GDP','CPI','INT','EXC','CDS')
-#Var_Cont   = c('GDP','CPI','INT','CDS')
+Var_names  = c('CPI','EXC')
+Var_Cont   = c('GDP','CPI','INT','EXC')
+#Var_Cont   = c('EXC')
 #Var_Cont   = NULL
 #2). Monetary policy shock proxies
 #MP_shocks  = c('ShockBloom','ShockOISL','ShockBR')
@@ -31,12 +31,12 @@ MP_shocks  = c('ShockBloom','MP_bloo_BEI','CBI_bloo_BEI')
 #MP_shocks  = c('ShockOISL','MP_OIS_BEI','CBI_OIS_BEI')
 
 #3) High frequency shocks in
-HF_Shocks  = c('Shock CDs','Shock TRM')
+#HF_Shocks  = c('Shock CDs','Shock TRM')
 
 ## Parameters for Estimation
 p          = 1
 hh1        = c(1:60)
-boot       = TRUE
+boot       = FALSE
 block_size <- 4 
 conf1      <- 0.32
 conf2      <- 0.1
@@ -58,8 +58,8 @@ pLags      = 3
 nSteps     = 60
 Confidence = 1-conf1
 Var_shock  = c('ShockOISL')
-#Var_shock  = c('MP_OIS_BEI')
-#Var_shock  = c('CBI_OIS_BEI')
+Var_shock  = c('MP_OIS_BEI')
+Var_shock  = c('CBI_OIS_BEI')
 VarNames2  = c(Var_shock,Var_Cont)
 #Var_shock  = c('INT')
 #VarNames2  = Var_Cont
