@@ -8,10 +8,13 @@ library(BVAR)
 library(bsvars)
 
 #Run some required funcitions
-source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/create_lags.r')
+#source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/create_lags.r')
+source('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/create_lags.r')
 
 #Set working Directory
-setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Input/')
+#setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Input/')
+setwd('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Input/')
+
 
 # Upload the data
 DATA      <- read_excel('DATAccorta.xlsx')
@@ -20,7 +23,7 @@ DATA      <- read_excel('DATAccorta.xlsx')
 
 #1). Dependent Variables
 Var_names  = c('GDP','INT','CPI','EXC')
-Var_names  = c('CPI')
+Var_names  = c('GDP')
 #Var_Cont   = c('GDP','CPI','INT','EXC','CDS')
 Var_Cont   = c('GDP','CPI','INT')
 #Var_Cont   = NULL
@@ -46,7 +49,8 @@ for(ss in MP_shocks){
   shock_anal  = ss
   Data_Anal  <- DATA[,c('Date',unique(c(Var_names,Var_Cont)),shock_anal)]
   Data_Anal  <- Data_Anal[complete.cases(Data_Anal),]
-  source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
+  #source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
+  source('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
 }
 
 
