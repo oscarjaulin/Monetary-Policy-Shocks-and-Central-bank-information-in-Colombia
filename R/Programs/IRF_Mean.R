@@ -104,37 +104,53 @@ for(n in Var_names){
   
   IRF          = t(IRF_RESULTS[nn,which(names(Model$coefficients)==shock_anal),,])
   
-  jpeg(paste0(n,'_',shock_anal, ".jpeg"), width = 1250, height = 1250)
-  plot.ts(IRF[,3], 
-          ylim = c(min(IRF[,1],IRF[,2],IRF[,4],IRF[,5]), max(IRF[,1],IRF[,2],IRF[,4],IRF[,5])), 
-          main = n, 
-          ylab = 'Percent', 
-          xlab = 'Horizons', 
-          col = color,  # Color de la serie principal
-          lwd = 2,       # Grosor de la serie principal   
-          cex.main = 2.5,   # Título más grande
-          cex.lab = 2.2,    # Etiquetas de ejes más grandes
-          cex.axis = 1.8,   # Números de ejes más grandes
-          font.main = 2     # Negrita para el título
-  )  
+  jpeg(paste0(n, "_", shock_anal, ".jpeg"), width = 1250, height = 1250)
   
+  par(
+    mar = c(6, 8.5, 4.5, 2),   # larger left margin
+    mgp = c(4, 1.5, 0)         # title, labels, axis line positions
+  )
   
-  # Graficar las líneas de IR_Ch_Low y IR_Ch_sup
-  lines(IRF[,1], col = color, lty = 3, lwd = 3)  # Línea punteada, más gruesa
-  lines(IRF[,5], col = color, lty = 3, lwd = 3)  # Línea punteada, más gruesa
-  
-  lines(IRF[,2], col = color, lty = 3, lwd = 3)  # Línea punteada y roja, más gruesa
-  lines(IRF[,4], col = color, lty = 3, lwd = 3)  # Línea punteada y roja, más gruesa
-  
-  # Agregar sombra entre las curvas superior e inferior
   t <- 1:nrow(IRF)
+  
+  ylim_vals <- c(
+    min(IRF[, 1], IRF[, 2], IRF[, 4], IRF[, 5], na.rm = TRUE),
+    max(IRF[, 1], IRF[, 2], IRF[, 4], IRF[, 5], na.rm = TRUE)
+  )
+  
+  plot(
+    t, IRF[, 3],
+    type = "l",
+    ylim = ylim_vals,
+    main = n,
+    ylab = "",
+    xlab = "",
+    col = color,
+    lwd = 3,
+    axes = FALSE,
+    cex.main = 3,
+    font.main = 2
+  )
+  
   polygon(c(t, rev(t)), c(IRF[, 1], rev(IRF[, 5])), col = alpha(color, 0.2), border = NA)
   polygon(c(t, rev(t)), c(IRF[, 2], rev(IRF[, 4])), col = alpha(color, 0.3), border = NA)
-  # Agregar línea horizontal en y=0
-  abline(h = 0, col = 'azure4', lwd = 2)
   
-  # Agregar rejillas (grids)
+  lines(t, IRF[, 3], col = color, lwd = 3)
+  lines(t, IRF[, 1], col = color, lty = 3, lwd = 3)
+  lines(t, IRF[, 5], col = color, lty = 3, lwd = 3)
+  lines(t, IRF[, 2], col = color, lty = 3, lwd = 3)
+  lines(t, IRF[, 4], col = color, lty = 3, lwd = 3)
+  
+  abline(h = 0, col = "azure4", lwd = 2)
   grid(col = "gray", lty = "dotted")
+  
+  axis(1, cex.axis = 2.7, lwd = 2)
+  axis(2, cex.axis = 2.7, lwd = 2, las = 1)
+  
+  box(lwd = 2)
+  
+  mtext("Horizons", side = 1, line = 4, cex = 2.9)
+  mtext("Percent", side = 2, line = 6.5, cex = 2.9)   # moved further left
   
   dev.off()
 }

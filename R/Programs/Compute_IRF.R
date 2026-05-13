@@ -24,7 +24,7 @@ DATA      <- read_excel('DATAc2021.xlsx')
 
 #1). Dependent Variables
 Var_names  = c('GDP','INT','CPI','EXC')
-Var_names  = c('GDP')
+Var_names  = c('GDP','CPI')
 #Var_Cont   = c('GDP','CPI','INT','EXC','CDS')
 Var_Cont   = c('GDP','CPI','INT')
 #Var_Cont   = NULL
@@ -53,6 +53,15 @@ for(ss in MP_shocks){
   #source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
   source('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
 }
+
+
+
+
+
+
+
+
+
 
 
 #----------------------------------------------
