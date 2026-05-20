@@ -8,16 +8,16 @@ library(BVAR)
 library(bsvars)
 
 #Run some required funcitions
-#source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/create_lags.r')
-source('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/create_lags.r')
+source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/create_lags.r')
+#source('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/create_lags.r')
 
 #Set working Directory
-#setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Input/')
-setwd('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Input/')
+setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Input/')
+#setwd('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Input/')
 
 
 # Upload the data
-DATA      <- read_excel('DATAc2021.xlsx')
+DATA      <- read_excel('DATAccorta.xlsx')
 #DATA      = DATA[37:nrow(DATA),]
 
 #Define the variables of analysis
@@ -50,8 +50,8 @@ for(ss in MP_shocks){
   shock_anal  = ss
   Data_Anal  <- DATA[,c('Date',unique(c(Var_names,Var_Cont)),shock_anal)]
   Data_Anal  <- Data_Anal[complete.cases(Data_Anal),]
-  #source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
-  source('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
+  source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
+  #source('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Programs/IRF_Mean.r')
 }
 
 
@@ -67,11 +67,11 @@ for(ss in MP_shocks){
 #----------------------------------------------
 # Estimation of a BVAR using the package bsvars
 #----------------------------------------------
-pLags      = 3
+pLags      = 12
 nSteps     = 60
 Confidence = 1-conf1
 Var_shock  = c('ShockOISL')
-Var_shock  = c('MP_OIS_BEI')
+#Var_shock  = c('MP_OIS_BEI')
 Var_shock  = c('CBI_OIS_BEI')
 VarNames2  = c(Var_shock,Var_Cont)
 #Var_shock  = c('INT')
@@ -94,8 +94,8 @@ spec <- specify_bsvar$new(
 )
 
 # 3) Estimación (burn-in + cadena principal)
-fit_burn <- estimate(spec,     S = 2000,  thin = 1)
-fit_bvar <- estimate(fit_burn, S = 20000, thin = 1)
+fit_burn <- estimate(spec,     S = 1000,  thin = 1)
+fit_bvar <- estimate(fit_burn, S = 10000, thin = 1)
 
 # 4) Resumen
 summary(fit_bvar)
