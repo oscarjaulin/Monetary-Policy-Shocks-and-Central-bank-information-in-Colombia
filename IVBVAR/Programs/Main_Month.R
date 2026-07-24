@@ -20,17 +20,17 @@ library(ggplot2)
 setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Input/')
 
 
-Data         = read_excel('DATA_Monthly_2005_2025.xlsx')
+Data         = read_excel('DATA_Monthly_2008_2025.xlsx')
 nSteps       = 36
 ident        = 'IV'
 Pandemic_priors = TRUE
 names_macro  = c('CPI','CPISAR','GDP','TIB')
-#names_exo    = c('EXC')
-names_exo    = NULL
+names_exo    = c('EXC','WTI')
+#names_exo    = NULL
 names_VAR    = c(names_exo,names_macro)
 
 policy_var_name = "TIB"
-instrument_name = "CBIbloo"
+instrument_name = "CBI"
 
 #Convert it to ta series
 Year    = year(Data$Fecha[1])
