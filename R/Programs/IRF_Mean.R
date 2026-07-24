@@ -3,8 +3,8 @@
 
 IRF_RESULTS   <- array(NA, dim = c(length(Var_names),(length(Var_Cont)*p)+2,5,length(hh1)))
 
-#setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Output/')
-setwd('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Output/')
+setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Output/')
+#setwd('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/R/Output/')
 for(n in Var_names){
   message(paste0("Estimating: ",n))
   for(h in hh1){
