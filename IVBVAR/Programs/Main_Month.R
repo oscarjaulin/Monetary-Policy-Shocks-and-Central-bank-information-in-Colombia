@@ -20,10 +20,10 @@ library(ggplot2)
 setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Input/')
 
 
-Data         = read_excel('DATA_Monthly_2008_2025.xlsx')
+Data         = read_excel('DATA_Monthly_2005_2025.xlsx')
 nSteps       = 36
 ident        = 'IV'
-Pandemic_priors = TRUE
+Pandemic_priors = FALSE
 names_macro  = c('CPI','CPISAR','GDP','TIB')
 names_exo    = c('EXC','WTI')
 #names_exo    = NULL
@@ -54,7 +54,7 @@ selected_shock <- "TIB"
 
 
 # Choose response variables to display
-selected_responses <- c('TIB1','TIB2',"GDP", "CPI",'CPISAR','CDS','EXC')
+selected_responses <- c('TIB','TIB2',"GDP", "CPI",'CPISAR','CDS','EXC','WTI')
 #selected_responses <- c("GDP", "CPI",'TIB','WAGE')
 
 
@@ -87,7 +87,7 @@ ggplot(plot_data, aes(x = horizon)) +
   ) +
   labs(
     title = paste("Impulse responses to a", selected_shock, "shock"),
-    subtitle = "Posterior median with 68% and 90% credible bands",
+    subtitle = "Posterior median with 68% credible bands",
     x = "Horizon",
     y = "Response"
   ) +
