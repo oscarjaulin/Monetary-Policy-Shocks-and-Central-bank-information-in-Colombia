@@ -22,7 +22,7 @@ setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP
 
 Data         = read_excel('DATA_Monthly_2005_2025.xlsx')
 nSteps       = 36
-ident        = 'IV'
+ident        = 'Chol'
 Pandemic_priors = FALSE
 names_macro  = c('CPI','CPISAR','GDP','TIB')
 names_exo    = c('EXC','WTI')
@@ -54,7 +54,7 @@ selected_shock <- "TIB"
 
 
 # Choose response variables to display
-selected_responses <- c('TIB','TIB2',"GDP", "CPI",'CPISAR','CDS','EXC','WTI')
+selected_responses <- c('TIB','TIB2',"GDP", "CPI",'CPISAR','CDS','EXC')
 #selected_responses <- c("GDP", "CPI",'TIB','WAGE')
 
 

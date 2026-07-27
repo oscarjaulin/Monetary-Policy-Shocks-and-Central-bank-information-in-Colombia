@@ -101,14 +101,6 @@ if (anyNA(date_vec_use)) {
 # ------------------------------------------------------------
 # 2. Lag-length selection
 # ------------------------------------------------------------
-
-lag_selection <- VARselect(Yraw, lag.max = 12, type = "const")
-
-# View lag-selection results
-lag_selection
-
-# Choose lag length according to HQ criterion, as in your original BVAR.R
-p <-ceiling(mean(lag_selection$selection))
 p = 12
 if(frequency(ts_Data)==4) p = 4
 # ------------------------------------------------------------
