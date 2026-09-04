@@ -5,13 +5,13 @@ create_lagged_df <- function(dataset, vars, h) {
     stop(paste("Las siguientes variables no están en el dataset:", paste(missing_vars, collapse = ", ")))
   }
   
-  # Verificar que 'Date' exista
-  if (!"Date" %in% colnames(dataset)) {
-    stop("El dataset debe contener una columna llamada 'Date'")
+  # Verificar que 'Fecha' exista
+  if (!"Fecha" %in% colnames(dataset)) {
+    stop("El dataset debe contener una columna llamada 'Fecha'")
   }
   
   # Inicializar lista para almacenar columnas rezagadas
-  lagged_data <- list(Date = dataset$Date)
+  lagged_data <- list(Fecha = dataset$Fecha)
   
   for (var in vars) {
     for (i in 1:h) {
@@ -32,13 +32,13 @@ create_leads_df <- function(dataset, vars, h = 1, all_leads = TRUE) {
     stop(paste("Las siguientes variables no están en el dataset:", paste(missing_vars, collapse = ", ")))
   }
   
-  # Verificar que exista la columna "Date"
-  if (!"Date" %in% colnames(dataset)) {
-    stop("El dataset debe contener una columna llamada 'Date'")
+  # Verificar que exista la columna "Fecha"
+  if (!"Fecha" %in% colnames(dataset)) {
+    stop("El dataset debe contener una columna llamada 'Fecha'")
   }
   
-  # Inicializar con la columna Date
-  leads_data <- list(Date = dataset$Date)
+  # Inicializar con la columna Fecha
+  leads_data <- list(Fecha = dataset$Fecha)
   
   for (var in vars) {
     if (all_leads) {

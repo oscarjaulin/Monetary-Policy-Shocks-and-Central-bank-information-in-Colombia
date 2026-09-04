@@ -40,8 +40,8 @@ library(tidyr)
 
 # Source the Pandemic Priors functions. Adjust this path if needed.
 # The file should be the one from Cascaldi-Garcia's replication files.
-#source("D:/Disco C/Repositorios Git/Labor-Market-and-Compositional-Analysis/Compositional Data and Labor MArket/TOT/R/Programs/functions_Pandemic_Priors.R")
-source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Programs/functions_Pandemic_Priors.R')
+source("D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Programs/functions_Pandemic_Priors.R")
+#source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Programs/functions_Pandemic_Priors.R')
 
 # ------------------------------------------------------------
 # 1. Prepare data

@@ -16,8 +16,8 @@ library(ggplot2)
 
 
 # set wrd
-#setwd('D:/Disco C/Repositorios Git/Labor-Market-and-Compositional-Analysis/Compositional Data and Labor MArket/R/Input/')
-setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Input/')
+setwd('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Input/')
+#setwd('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Input/')
 
 
 Data         = read_excel('DATA_Monthly_2008_2025.xlsx')
@@ -41,60 +41,114 @@ Cov_per         = 0L
 if(Pandemic_priors) Cov_per         = 9L
 
 
-#source('D:/Disco C/Repositorios Git/Labor-Market-and-Compositional-Analysis/Compositional Data and Labor MArket/R/Programs/BVAR_Pandemic_Cholesky_ts.r')
-source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Programs/BVAR_Pandemic_Cholesky_ts.r')
+source('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Programs/BVAR_Pandemic_Cholesky_ts.r')
+#source('C:/Users/ojaulime/OneDrive - Banco de la República/Documents/Research/MP transmission in Colombia/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Programs/BVAR_Pandemic_Cholesky_ts.r')
 
-
+setwd('D:/Disco C/Repositorios Git/Monetary-Policy-Shocks-and-Central-bank-information-in-Colombia/IVBVAR/Output/')
 # ------------------------------------------------------------
 # 11. Custom IRF plot of the ILR
 # ------------------------------------------------------------
 
-
 selected_shock <- "TIB"
+selected_responses <- c('TIB', 'GDP', 'CPI', 'CPISAR')
 
-
-# Choose response variables to display
-selected_responses <- c('TIB','TIB2',"GDP", "CPI",'CPISAR','CDS','EXC')
-#selected_responses <- c("GDP", "CPI",'TIB','WAGE')
-
-
-plot_data <- irf_summary |>
-  filter(
-    shock == selected_shock,
-    response %in% selected_responses
+# Loop through each response variable to generate and save individual plots
+for (var in selected_responses) {
+  
+  # Filter data for the specific shock and response variable
+  single_plot_data <- irf_summary |>
+    filter(
+      shock == selected_shock,
+      response == var
+    )
+  
+  # Build individual ggplot
+  p <- ggplot(single_plot_data, aes(x = horizon)) +
+    geom_hline(
+      yintercept = 0,
+      linewidth = 0.5,
+      color = "grey50"
+    ) +
+    geom_ribbon(
+      aes(ymin = lower90, ymax = upper90),
+      alpha = 0.20
+    ) +
+    geom_ribbon(
+      aes(ymin = lower68, ymax = upper68),
+      alpha = 0.35
+    ) +
+    geom_line(
+      aes(y = median),
+      linewidth = 0.8
+    ) +
+    labs(
+      title = var,
+      x = "Horizons",
+      y = "Percent"
+    ) +
+    theme_minimal() +
+    theme(
+      # Title text styling
+      plot.title = element_text(
+        face = "bold", 
+        size = 18, 
+        hjust = 0.5, 
+        margin = margin(b = 10)
+      ),
+      # Axis title font sizing
+      axis.title.x = element_text(
+        size = 15, 
+        face = "plain", 
+        margin = margin(t = 8)
+      ),
+      axis.title.y = element_text(
+        size = 15, 
+        face = "plain", 
+        margin = margin(r = 8)
+      ),
+      # Axis tick labels font sizing
+      axis.text.x = element_text(
+        size = 13, 
+        color = "black"
+      ),
+      axis.text.y = element_text(
+        size = 13, 
+        color = "black"
+      ),
+      # Grid line styling to match standard time-series plots
+      panel.grid.major = element_line(
+        color = "grey80", 
+        linetype = "dotted", 
+        linewidth = 0.5
+      ),
+      panel.grid.minor = element_line(
+        color = "grey90", 
+        linetype = "dotted", 
+        linewidth = 0.3
+      ),
+      # Outer square plot border
+      panel.border = element_rect(
+        color = "black", 
+        fill = NA, 
+        linewidth = 0.8
+      ),
+      # Plot background and margins
+      plot.background = element_rect(
+        fill = "white", 
+        color = NA
+      ),
+      plot.margin = margin(t = 12, r = 12, b = 12, l = 12)
+    )
+  
+  # Save the individual plot as a JPEG file
+  ggsave(
+    filename = paste0(selected_shock, "_", var, ".jpeg"),
+    plot = p,
+    device = "jpeg",
+    width = 4.5,
+    height = 4.5,
+    units = "in",
+    dpi = 300
   )
-
-ggplot(plot_data, aes(x = horizon)) +
-  geom_hline(
-    yintercept = 0,
-    linewidth = 0.3
-  ) +
-  geom_ribbon(
-    aes(ymin = lower90, ymax = upper90),
-    alpha = 0.20
-  ) +
-  geom_ribbon(
-    aes(ymin = lower68, ymax = upper68),
-    alpha = 0.35
-  ) +
-  geom_line(
-    aes(y = median),
-    linewidth = 0.8
-  ) +
-  facet_wrap(
-    ~ response,
-    scales = "free_y"
-  ) +
-  labs(
-    title = paste("Impulse responses to a", selected_shock, "shock"),
-    subtitle = "Posterior median with 68% credible bands",
-    x = "Horizon",
-    y = "Response"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(face = "bold"),
-    strip.text = element_text(face = "bold")
-  )
-
+}
 
