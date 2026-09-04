@@ -25,12 +25,12 @@ nSteps       = 36
 ident        = 'IV'
 Pandemic_priors = FALSE
 names_macro  = c('CPI','CPISAR','GDP','TIB')
-names_exo    = c('EXC','WTI')
+#names_exo    = c('EXC','WTI')
 names_exo    = NULL
 names_VAR    = c(names_exo,names_macro)
 
 policy_var_name = "TIB"
-instrument_name = "Shockbloo"
+instrument_name = "MP"
 
 #Convert it to ta series
 Year    = year(Data$Fecha[1])
